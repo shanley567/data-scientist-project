@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
@@ -8,7 +8,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 
 # Load data
-X_full = pd.read_csv(r"C:\Users\js105\Documents\Coding_portfolio\data-scientist-project\data\concrete.csv")
+X_full = pd.read_csv(
+    r"C:\Users\js105\Documents\Coding_portfolio\data-scientist-project\data\concrete.csv"
+)
 
 # Separate target
 target_col = "CompressiveStrength"
@@ -43,16 +45,35 @@ preprocessor = ColumnTransformer([
     ('cat', categorical_transformer, categorical_cols)
 ])
 
-# Full model pipeline
-model = Pipeline(steps=[
+# Full pipeline with placeholder model
+pipe = Pipeline(steps=[
     ('preprocessor', preprocessor),
-    ('regressor', RandomForestRegressor(n_estimators=300, random_state=0))
+    ('regressor', RandomForestRegressor(random_state=0))
 ])
 
-# Fit model
-model.fit(X_train, y_train)
+# Hyperparameter grid
+param_grid = {
+    'regressor__n_estimators': [100, 300, 500],
+    'regressor__max_depth': [10, 20, 40],
+    'regressor__min_samples_split': [2, 5, 10]
+}
 
-# Predict and evaluate
-preds = model.predict(X_valid)
+# Grid search
+grid = GridSearchCV(
+    estimator=pipe,
+    param_grid=param_grid,
+    cv=5,
+    scoring='neg_mean_absolute_error',
+    n_jobs=-4
+)
+
+grid.fit(X_train, y_train)
+
+# Best model and evaluation
+best_model = grid.best_estimator_
+preds = best_model.predict(X_valid)
 mae = mean_absolute_error(y_valid, preds)
-print("Validation MAE:", mae)
+
+print(f"Best parameters:=", grid.best_params_)
+print(f"Best CV MAE:", -grid.best_score_)
+print(f"Validation MAE:", mae)
