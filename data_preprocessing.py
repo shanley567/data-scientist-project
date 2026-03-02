@@ -74,6 +74,6 @@ best_model = grid.best_estimator_
 preds = best_model.predict(X_valid)
 mae = mean_absolute_error(y_valid, preds)
 
-print(f"Best parameters:=", grid.best_params_)
-print(f"Best CV MAE:", -grid.best_score_)
-print(f"Validation MAE:", mae)
+print(f"Best parameters:= {grid.best_params_}")
+print(f"Best CV MAE: {-grid.best_score_:.3g} (3sf)")
+print(f"Validation MAE: {mae:.3g} (3sf)")
