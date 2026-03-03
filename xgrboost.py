@@ -37,7 +37,7 @@ X_test_t = preprocessor.transform(X_test)
 # -----------------------------
 # XGBoost model with early stopping
 # -----------------------------
-xgb = XGBRegressor(
+model = XGBRegressor(
     random_state=0,
     n_estimators=5000,
     early_stopping_rounds=50,
@@ -49,7 +49,7 @@ xgb = XGBRegressor(
     tree_method="hist"
 )
 
-xgb.fit(
+model.fit(
     X_train_t,
     y_train,
     eval_set=[(X_test_t, y_test)],
@@ -60,7 +60,7 @@ xgb.fit(
 # -----------------------------
 # Evaluation
 # -----------------------------
-preds = xgb.predict(X_test_t)
+preds = model.predict(X_test_t)
 
 mae = mean_absolute_error(y_test, preds)
 rmse = root_mean_squared_error(y_test, preds)
@@ -75,7 +75,7 @@ print(f"R²:   {r2:.4f}")
 # -----------------------------
 import shap
 
-explainer = shap.TreeExplainer(xgb)
+explainer = shap.TreeExplainer(model)
 shap_values = explainer(X_test_t)
 
 # Beeswarm summary plot
@@ -100,7 +100,7 @@ from sklearn.inspection import permutation_importance
 
 # Compute permutation importance on the transformed test set
 perm = permutation_importance(
-    xgb,
+    model,
     X_test_t,
     y_test,
     n_repeats=10,
