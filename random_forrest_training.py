@@ -54,7 +54,7 @@ best_model = grid.best_estimator_
 # -----------------------------
 metrics = evaluate(model=best_model, X=X_valid, y=y_valid)
 
-print("\nFinal Evaluation on Validation Set:")
+print("\nRandom Forest - Final Evaluation on Validation Set:")
 print(f"MAE:  {metrics['mae']:.3g}")
 print(f"RMSE: {metrics['rmse']:.3g}")
 print(f"R²:   {metrics['r2']:.3g}")
