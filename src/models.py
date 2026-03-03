@@ -5,5 +5,5 @@ def get_random_forest():
 
 param_grid_rf = {
     "regressor__n_estimators": [100, 300, 500],
-    "regressor__max_depth": [None, 10, 20],
+    "regressor__max_depth": [10, 20],
 }

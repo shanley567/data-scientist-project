@@ -5,8 +5,10 @@ from src.train import train_model
 from src.evaluate import evaluate
 from sklearn.model_selection import train_test_split
 
-X, y = load_data(r"C:\Users\js105\Documents\Coding_portfolio\data-scientist-project\data\raw\concrete.csv",
-                  "CompressiveStrength")
+X, y = load_data(r"C:\Users\js105\Documents\Coding_portfolio\data-scientist-project\data\raw\cereal.csv"
+                  ,target_col="calories"
+                  ,index_column="name"
+                  )
 
 X_train, X_valid, y_train, y_valid = train_test_split(
     X, y, test_size=0.2, random_state=0
