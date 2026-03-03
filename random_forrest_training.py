@@ -7,12 +7,15 @@ from src.evaluate import evaluate
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score
 
+from src.evaluate import evaluate
+
 # -----------------------------
 # Load data
 # -----------------------------
 X, y = load_data(
-    r"C:\Users\js105\Documents\Coding_portfolio\data-scientist-project\data\raw\diamonds.csv",
-    target_col="price"
+    r"C:\Users\js105\Documents\Coding_portfolio\data-scientist-project\data\raw\diamonds.csv"
+    ,target_col="price"
+    # , index_col="id"
 )
 
 # -----------------------------
@@ -42,25 +45,18 @@ grid = train_model(
 
 print(f"Best parameters: {grid.best_params_}")
 
+
 # -----------------------------
 # Use the trained pipeline
 # -----------------------------
 best_model = grid.best_estimator_
 
 # -----------------------------
-# Predict on RAW validation data
-# (pipeline handles preprocessing)
+# Evaluate on RAW validation data
 # -----------------------------
-preds = best_model.predict(X_valid)
-
-# -----------------------------
-# Evaluation metrics
-# -----------------------------
-mae = mean_absolute_error(y_valid, preds)
-rmse = root_mean_squared_error(y_valid, preds)
-r2 = r2_score(y_valid, preds)
+metrics = evaluate(model=best_model, X=X_valid, y=y_valid)
 
 print("\nFinal Evaluation on Validation Set:")
-print(f"MAE:  {mae:.3g}")
-print(f"RMSE: {rmse:.3g}")
-print(f"R²:   {r2:.4f}")
+print(f"MAE:  {metrics['mae']:.3g}")
+print(f"RMSE: {metrics['rmse']:.3g}")
+print(f"R²:   {metrics['r2']:.3g}")
