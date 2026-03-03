@@ -2,7 +2,15 @@ from src.data_loader import load_data
 from xgboost import XGBRegressor
 from sklearn.model_selection import train_test_split
 from src.preprocessing import build_preprocessor
-from src.evaluate import evaluate   # <-- use your modular evaluator
+from src.evaluate import evaluate
+
+from src.explain.shap_explainer import (
+    compute_shap_values,
+    plot_shap_summary,
+    plot_shap_bar
+)
+from src.explain.permutation_importance import compute_permutation_importance
+
 
 # -----------------------------
 # Load data
@@ -64,44 +72,31 @@ print(f"MAE:  {metrics['mae']:.3g}")
 print(f"RMSE: {metrics['rmse']:.3g}")
 print(f"R²:   {metrics['r2']:.4f}")
 
-# # -----------------------------
-# # SHAP value analysis
-# # -----------------------------
-# import shap
+# -----------------------------
+# SHAP (modular)
+# -----------------------------
+feature_names = preprocessor.get_feature_names_out()
 
-# explainer = shap.TreeExplainer(model)
-# shap_values = explainer(X_test_t)
+shap_values, X_dense = compute_shap_values(
+    model=model,
+    X=X_test_t,
+    feature_names=feature_names,
+    max_samples=500
+)
 
-# shap.summary_plot(
-#     shap_values.values,
-#     X_test_t,
-#     feature_names=preprocessor.get_feature_names_out()
-# )
+plot_shap_summary(shap_values, X_dense, feature_names)
+plot_shap_bar(shap_values, X_dense, feature_names)
 
-# shap.summary_plot(
-#     shap_values.values,
-#     X_test_t,
-#     feature_names=preprocessor.get_feature_names_out(),
-#     plot_type="bar"
-# )
+# -----------------------------
+# Permutation importance (modular)
+# -----------------------------
+importances = compute_permutation_importance(
+    model=model,
+    X=X_test_t,
+    y=y_test,
+    feature_names=feature_names
+)
 
-# # -----------------------------
-# # Permutation importance
-# # -----------------------------
-# from sklearn.inspection import permutation_importance
-
-# perm = permutation_importance(
-#     model,
-#     X_test_t,
-#     y_test,
-#     n_repeats=10,
-#     random_state=0,
-#     scoring="neg_mean_absolute_error"
-# )
-
-# feature_names = preprocessor.get_feature_names_out()
-# sorted_idx = perm.importances_mean.argsort()[::-1] 
-
-# print("\nPermutation Importance (top 20 features):")
-# for idx in sorted_idx[:20]:
-#     print(f"{feature_names[idx]}: {perm.importances_mean[idx]:.4f}")
+print("\nPermutation Importance (top 20 features):")
+for name, score in importances[:20]:
+    print(f"{name}: {score:.4f}")
