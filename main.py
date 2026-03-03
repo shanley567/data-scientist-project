@@ -18,4 +18,4 @@ model = get_random_forest()
 grid = train_model(preprocessor, model, param_grid_rf, X_train, y_train)
 
 mae = evaluate(model=grid.best_estimator_, X_valid=X_valid, y_valid=y_valid)
-print(f"Validation MAE: {mae:.3g}")
+print(f"Validation MAE: {mae:.3g} (3sf)")
