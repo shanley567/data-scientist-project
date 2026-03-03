@@ -1,0 +1,9 @@
+from sklearn.ensemble import RandomForestRegressor
+
+def get_random_forest():
+    return RandomForestRegressor(random_state=0)
+
+param_grid_rf = {
+    "regressor__n_estimators": [100, 300, 500],
+    "regressor__max_depth": [None, 10, 20],
+}
