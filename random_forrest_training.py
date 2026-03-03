@@ -15,6 +15,7 @@ X_train, X_valid, y_train, y_valid = train_test_split(
 )
 
 preprocessor = build_preprocessor(X_train)
+
 model = get_random_forest()
 
 grid = train_model(preprocessor, model, param_grid_rf, X_train, y_train)

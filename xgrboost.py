@@ -1,20 +1,16 @@
-import pandas as pd
+from src.data_loader import load_data
 from xgboost import XGBRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score
-
 from src.preprocessing import build_preprocessor
-
 
 # -----------------------------
 # Load data
 # -----------------------------
-df = pd.read_csv(
-    r"C:\Users\js105\Documents\Coding_portfolio\data-scientist-project\data\raw\diamonds.csv"
-)
-
-y = df["price"]
-X = df.drop(columns=["price"])
+X, y = load_data(r"C:\Users\js105\Documents\Coding_portfolio\data-scientist-project\data\raw\diamonds.csv"
+                  ,target_col="price"
+                #   ,index_column="name"
+                  )
 
 
 # -----------------------------
@@ -45,7 +41,11 @@ xgb = XGBRegressor(
     random_state=0,
     n_estimators=5000,
     early_stopping_rounds=50,
-    learning_rate=0.05,
+    learning_rate=0.01,
+    max_depth=10,
+    min_child_weight=4,
+    subsample=0.8,
+    colsample_bytree=0.8,
     tree_method="hist"
 )
 
