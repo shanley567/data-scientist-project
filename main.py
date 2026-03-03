@@ -5,9 +5,9 @@ from src.train import train_model
 from src.evaluate import evaluate
 from sklearn.model_selection import train_test_split
 
-X, y = load_data(r"C:\Users\js105\Documents\Coding_portfolio\data-scientist-project\data\raw\cereal.csv"
-                  ,target_col="calories"
-                  ,index_column="name"
+X, y = load_data(r"C:\Users\js105\Documents\Coding_portfolio\data-scientist-project\data\raw\diamonds.csv"
+                  ,target_col="price"
+                #   ,index_column="name"
                   )
 
 X_train, X_valid, y_train, y_valid = train_test_split(
@@ -20,4 +20,5 @@ model = get_random_forest()
 grid = train_model(preprocessor, model, param_grid_rf, X_train, y_train)
 
 mae = evaluate(model=grid.best_estimator_, X_valid=X_valid, y_valid=y_valid)
+print(f"Best parameters: {grid.best_params_}")
 print(f"Validation MAE: {mae:.3g} (3sf)")
