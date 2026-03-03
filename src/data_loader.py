@@ -11,7 +11,7 @@ def load_data(path, target_col, index_column=None):
     except ValueError as e:
         # This happens when index_column is invalid
         raise ValueError(
-            f"Invalid index column '{index_column}'. "
+            f"Invalid index column '{index_column}'."
             f"Available columns: {pd.read_csv(path).columns.tolist()}"
         ) from e
 
