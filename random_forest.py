@@ -67,35 +67,35 @@ print(f"MAE:  {metrics['mae']:.3g}")
 print(f"RMSE: {metrics['rmse']:.3g}")
 print(f"R²:   {metrics['r2']:.3g}")
 
-# -----------------------------
-# SHAP explainability
-# -----------------------------
-pre = best_model.named_steps["preprocessor"]
-rf = best_model.named_steps["regressor"]
+# # -----------------------------
+# # SHAP explainability
+# # -----------------------------
+# pre = best_model.named_steps["preprocessor"]
+# rf = best_model.named_steps["regressor"]
 
-X_valid_t = pre.transform(X_valid)
-feature_names = pre.get_feature_names_out()
+# X_valid_t = pre.transform(X_valid)
+# feature_names = pre.get_feature_names_out()
 
-shap_values, X_dense = compute_shap_values(
-    model=rf,
-    X=X_valid_t,
-    feature_names=feature_names,
-    max_samples=500
-)
+# shap_values, X_dense = compute_shap_values(
+#     model=rf,
+#     X=X_valid_t,
+#     feature_names=feature_names,
+#     max_samples=500
+# )
 
-plot_shap_summary(shap_values, X_dense, feature_names)
-plot_shap_bar(shap_values, X_dense, feature_names)
+# plot_shap_summary(shap_values, X_dense, feature_names)
+# plot_shap_bar(shap_values, X_dense, feature_names)
 
-# -----------------------------
-# Permutation importance
-# -----------------------------
-importances = compute_permutation_importance(
-    model=rf,
-    X=X_valid_t,
-    y=y_valid,
-    feature_names=feature_names
-)
+# # -----------------------------
+# # Permutation importance
+# # -----------------------------
+# importances = compute_permutation_importance(
+#     model=rf,
+#     X=X_valid_t,
+#     y=y_valid,
+#     feature_names=feature_names
+# )
 
-print("\nPermutation Importance (top 20 features):")
-for name, score in importances[:20]:
-    print(f"{name}: {score:.4f}")
+# print("\nPermutation Importance (top 20 features):")
+# for name, score in importances[:20]:
+#     print(f"{name}: {score:.4f}")

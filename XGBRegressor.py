@@ -72,31 +72,31 @@ print(f"MAE:  {metrics['mae']:.3g}")
 print(f"RMSE: {metrics['rmse']:.3g}")
 print(f"R²:   {metrics['r2']:.4f}")
 
-# -----------------------------
-# SHAP (modular)
-# -----------------------------
-feature_names = preprocessor.get_feature_names_out()
+# # -----------------------------
+# # SHAP (modular)
+# # -----------------------------
+# feature_names = preprocessor.get_feature_names_out()
 
-shap_values, X_dense = compute_shap_values(
-    model=model,
-    X=X_test_t,
-    feature_names=feature_names,
-    max_samples=500
-)
+# shap_values, X_dense = compute_shap_values(
+#     model=model,
+#     X=X_test_t,
+#     feature_names=feature_names,
+#     max_samples=500
+# )
 
-plot_shap_summary(shap_values, X_dense, feature_names)
-plot_shap_bar(shap_values, X_dense, feature_names)
+# plot_shap_summary(shap_values, X_dense, feature_names)
+# plot_shap_bar(shap_values, X_dense, feature_names)
 
-# -----------------------------
-# Permutation importance (modular)
-# -----------------------------
-importances = compute_permutation_importance(
-    model=model,
-    X=X_test_t,
-    y=y_test,
-    feature_names=feature_names
-)
+# # -----------------------------
+# # Permutation importance (modular)
+# # -----------------------------
+# importances = compute_permutation_importance(
+#     model=model,
+#     X=X_test_t,
+#     y=y_test,
+#     feature_names=feature_names
+# )
 
-print("\nPermutation Importance (top 20 features):")
-for name, score in importances[:20]:
-    print(f"{name}: {score:.4f}")
+# print("\nPermutation Importance (top 20 features):")
+# for name, score in importances[:20]:
+#     print(f"{name}: {score:.4f}")
